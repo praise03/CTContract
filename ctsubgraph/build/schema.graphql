@@ -1,0 +1,40 @@
+type BuyOrder @entity(immutable: true) {
+  id: Bytes!
+  tokenContractAddress: Bytes! # address
+  amount: BigInt! # uint256
+  recipient: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SellOrder @entity(immutable: true) {
+  id: Bytes!
+  tokenContractAddress: Bytes! # address
+  amount: BigInt! # uint256
+  recipient: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type logDisperce @entity(immutable: true) {
+  id: Bytes!
+  swapAmount: BigInt! # uint256
+  receivedTokens: BigInt! # uint256
+  tokensToDistributePerUser: BigInt! # uint256
+  fundedSubscriberCount: Int! # uint8
+  fundedSubscribers: [Bytes!]! # address[]
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

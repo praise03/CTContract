@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: mumbai
+    source:
+      address: "0xd4203C458104C98328Ba83e2F2E4cA8C6C4e121C"
+      abi: Contract
+      startBlock: 43378588
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - BuyOrder
+        - OwnershipTransferred
+        - SellOrder
+        - logDisperce
+      abis:
+        - name: Contract
+          file: Contract\abis\Contract.json
+      eventHandlers:
+        - event: BuyOrder(indexed address,indexed uint256,address)
+          handler: handleBuyOrder
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: SellOrder(indexed address,indexed uint256,address)
+          handler: handleSellOrder
+        - event: logDisperce(uint256,uint256,uint256,uint8,address[])
+          handler: handlelogDisperce
+      file: Contract\Contract.wasm

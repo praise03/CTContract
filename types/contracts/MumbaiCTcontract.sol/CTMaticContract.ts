@@ -25,17 +25,18 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "../../common";
 
 export type LogStruct = {
-  index: BigNumberish;
-  timestamp: BigNumberish;
-  txHash: BytesLike;
-  blockNumber: BigNumberish;
-  blockHash: BytesLike;
-  source: string;
-  topics: BytesLike[];
-  data: BytesLike;
+  index: PromiseOrValue<BigNumberish>;
+  timestamp: PromiseOrValue<BigNumberish>;
+  txHash: PromiseOrValue<BytesLike>;
+  blockNumber: PromiseOrValue<BigNumberish>;
+  blockHash: PromiseOrValue<BytesLike>;
+  source: PromiseOrValue<string>;
+  topics: PromiseOrValue<BytesLike>[];
+  data: PromiseOrValue<BytesLike>;
 };
 
 export type LogStructOutput = [
@@ -69,12 +70,15 @@ export interface CTMaticContractInterface extends utils.Interface {
     "estimateMaticforToken(uint256,address)": FunctionFragment;
     "estimateTokenForMatic(uint256,address)": FunctionFragment;
     "executeTradeAndDisperce(address,uint256)": FunctionFragment;
+    "owner()": FunctionFragment;
     "performUpkeep(bytes)": FunctionFragment;
     "quoter()": FunctionFragment;
-    "setSwapHelper(address)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
     "subscribe()": FunctionFragment;
     "subscriberCount()": FunctionFragment;
-    "swapHelper()": FunctionFragment;
+    "swapExactMaticToToken(address)": FunctionFragment;
+    "swapTokenToMatic(uint256,address)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
     "uniswapRouter()": FunctionFragment;
     "userBalance(address)": FunctionFragment;
     "withdraw(uint256)": FunctionFragment;
@@ -91,58 +95,65 @@ export interface CTMaticContractInterface extends utils.Interface {
       | "estimateMaticforToken"
       | "estimateTokenForMatic"
       | "executeTradeAndDisperce"
+      | "owner"
       | "performUpkeep"
       | "quoter"
-      | "setSwapHelper"
+      | "renounceOwnership"
       | "subscribe"
       | "subscriberCount"
-      | "swapHelper"
+      | "swapExactMaticToToken"
+      | "swapTokenToMatic"
+      | "transferOwnership"
       | "uniswapRouter"
       | "userBalance"
       | "withdraw"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "balances", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "balances",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "bytes32ToAddress",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "bytes32ToUint256",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "checkLog",
-    values: [LogStruct, BytesLike]
+    values: [LogStruct, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "convertExactMaticToToken",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "convertTokenToMatic",
-    values: [BigNumberish, string]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "estimateMaticforToken",
-    values: [BigNumberish, string]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "estimateTokenForMatic",
-    values: [BigNumberish, string]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "executeTradeAndDisperce",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "performUpkeep",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "quoter", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "setSwapHelper",
-    values: [string]
+    functionFragment: "renounceOwnership",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "subscribe", values?: undefined): string;
   encodeFunctionData(
@@ -150,17 +161,28 @@ export interface CTMaticContractInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "swapHelper",
-    values?: undefined
+    functionFragment: "swapExactMaticToToken",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "swapTokenToMatic",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "uniswapRouter",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "userBalance", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "userBalance",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
 
   decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
@@ -193,13 +215,14 @@ export interface CTMaticContractInterface extends utils.Interface {
     functionFragment: "executeTradeAndDisperce",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "performUpkeep",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "quoter", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setSwapHelper",
+    functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "subscribe", data: BytesLike): Result;
@@ -207,7 +230,18 @@ export interface CTMaticContractInterface extends utils.Interface {
     functionFragment: "subscriberCount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "swapHelper", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "swapExactMaticToToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "swapTokenToMatic",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "uniswapRouter",
     data: BytesLike
@@ -220,11 +254,13 @@ export interface CTMaticContractInterface extends utils.Interface {
 
   events: {
     "BuyOrder(address,uint256,address)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
     "SellOrder(address,uint256,address)": EventFragment;
     "logDisperce(uint256,uint256,uint256,uint8,address[])": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BuyOrder"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SellOrder"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "logDisperce"): EventFragment;
 }
@@ -240,6 +276,18 @@ export type BuyOrderEvent = TypedEvent<
 >;
 
 export type BuyOrderEventFilter = TypedEventFilter<BuyOrderEvent>;
+
+export interface OwnershipTransferredEventObject {
+  previousOwner: string;
+  newOwner: string;
+}
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string],
+  OwnershipTransferredEventObject
+>;
+
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface SellOrderEventObject {
   tokenContractAddress: string;
@@ -295,260 +343,330 @@ export interface CTMaticContract extends BaseContract {
 
   functions: {
     balances(
-      subscriber: string,
+      subscriber: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { balance: BigNumber }>;
 
     bytes32ToAddress(
-      _address: BytesLike,
+      _address: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     bytes32ToUint256(
-      _amount: BytesLike,
+      _amount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     checkLog(
       log: LogStruct,
-      arg1: BytesLike,
+      arg1: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [boolean, string] & { upkeepNeeded: boolean; performData: string }
     >;
 
     convertExactMaticToToken(
-      _tokenOut: string,
-      overrides?: PayableOverrides & { from?: string }
+      _tokenOut: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     convertTokenToMatic(
-      amountIn: BigNumberish,
-      token: string,
-      overrides?: Overrides & { from?: string }
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     estimateMaticforToken(
-      tokenAmountOut: BigNumberish,
-      token: string,
-      overrides?: PayableOverrides & { from?: string }
+      tokenAmountOut: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     estimateTokenForMatic(
-      MaticAmount: BigNumberish,
-      token: string,
-      overrides?: PayableOverrides & { from?: string }
+      MaticAmount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     executeTradeAndDisperce(
-      tokenContractAddress: string,
-      amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string }
+      tokenContractAddress: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     performUpkeep(
-      performData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      performData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     quoter(overrides?: CallOverrides): Promise<[string]>;
 
-    setSwapHelper(
-      _swapHelper: string,
-      overrides?: Overrides & { from?: string }
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     subscribe(
-      overrides?: PayableOverrides & { from?: string }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     subscriberCount(overrides?: CallOverrides): Promise<[number]>;
 
-    swapHelper(overrides?: CallOverrides): Promise<[string]>;
+    swapExactMaticToToken(
+      _tokenOut: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    swapTokenToMatic(
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     uniswapRouter(overrides?: CallOverrides): Promise<[string]>;
 
-    userBalance(user: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    userBalance(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
-  balances(subscriber: string, overrides?: CallOverrides): Promise<BigNumber>;
+  balances(
+    subscriber: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   bytes32ToAddress(
-    _address: BytesLike,
+    _address: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<string>;
 
   bytes32ToUint256(
-    _amount: BytesLike,
+    _amount: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   checkLog(
     log: LogStruct,
-    arg1: BytesLike,
+    arg1: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<
     [boolean, string] & { upkeepNeeded: boolean; performData: string }
   >;
 
   convertExactMaticToToken(
-    _tokenOut: string,
-    overrides?: PayableOverrides & { from?: string }
+    _tokenOut: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   convertTokenToMatic(
-    amountIn: BigNumberish,
-    token: string,
-    overrides?: Overrides & { from?: string }
+    amountIn: PromiseOrValue<BigNumberish>,
+    token: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   estimateMaticforToken(
-    tokenAmountOut: BigNumberish,
-    token: string,
-    overrides?: PayableOverrides & { from?: string }
+    tokenAmountOut: PromiseOrValue<BigNumberish>,
+    token: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   estimateTokenForMatic(
-    MaticAmount: BigNumberish,
-    token: string,
-    overrides?: PayableOverrides & { from?: string }
+    MaticAmount: PromiseOrValue<BigNumberish>,
+    token: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   executeTradeAndDisperce(
-    tokenContractAddress: string,
-    amount: BigNumberish,
-    overrides?: PayableOverrides & { from?: string }
+    tokenContractAddress: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  owner(overrides?: CallOverrides): Promise<string>;
+
   performUpkeep(
-    performData: BytesLike,
-    overrides?: Overrides & { from?: string }
+    performData: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   quoter(overrides?: CallOverrides): Promise<string>;
 
-  setSwapHelper(
-    _swapHelper: string,
-    overrides?: Overrides & { from?: string }
+  renounceOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   subscribe(
-    overrides?: PayableOverrides & { from?: string }
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   subscriberCount(overrides?: CallOverrides): Promise<number>;
 
-  swapHelper(overrides?: CallOverrides): Promise<string>;
+  swapExactMaticToToken(
+    _tokenOut: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  swapTokenToMatic(
+    amountIn: PromiseOrValue<BigNumberish>,
+    token: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  transferOwnership(
+    newOwner: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   uniswapRouter(overrides?: CallOverrides): Promise<string>;
 
-  userBalance(user: string, overrides?: CallOverrides): Promise<BigNumber>;
+  userBalance(
+    user: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   withdraw(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string }
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    balances(subscriber: string, overrides?: CallOverrides): Promise<BigNumber>;
+    balances(
+      subscriber: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     bytes32ToAddress(
-      _address: BytesLike,
+      _address: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<string>;
 
     bytes32ToUint256(
-      _amount: BytesLike,
+      _amount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     checkLog(
       log: LogStruct,
-      arg1: BytesLike,
+      arg1: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [boolean, string] & { upkeepNeeded: boolean; performData: string }
     >;
 
     convertExactMaticToToken(
-      _tokenOut: string,
+      _tokenOut: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     convertTokenToMatic(
-      amountIn: BigNumberish,
-      token: string,
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     estimateMaticforToken(
-      tokenAmountOut: BigNumberish,
-      token: string,
+      tokenAmountOut: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     estimateTokenForMatic(
-      MaticAmount: BigNumberish,
-      token: string,
+      MaticAmount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     executeTradeAndDisperce(
-      tokenContractAddress: string,
-      amount: BigNumberish,
+      tokenContractAddress: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
+    owner(overrides?: CallOverrides): Promise<string>;
+
     performUpkeep(
-      performData: BytesLike,
+      performData: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     quoter(overrides?: CallOverrides): Promise<string>;
 
-    setSwapHelper(
-      _swapHelper: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     subscribe(overrides?: CallOverrides): Promise<void>;
 
     subscriberCount(overrides?: CallOverrides): Promise<number>;
 
-    swapHelper(overrides?: CallOverrides): Promise<string>;
+    swapExactMaticToToken(
+      _tokenOut: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    swapTokenToMatic(
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     uniswapRouter(overrides?: CallOverrides): Promise<string>;
 
-    userBalance(user: string, overrides?: CallOverrides): Promise<BigNumber>;
+    userBalance(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    withdraw(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
     "BuyOrder(address,uint256,address)"(
-      tokenContractAddress?: string | null,
-      amount?: BigNumberish | null,
+      tokenContractAddress?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       recipient?: null
     ): BuyOrderEventFilter;
     BuyOrder(
-      tokenContractAddress?: string | null,
-      amount?: BigNumberish | null,
+      tokenContractAddress?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       recipient?: null
     ): BuyOrderEventFilter;
 
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+    OwnershipTransferred(
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+
     "SellOrder(address,uint256,address)"(
-      tokenContractAddress?: string | null,
-      amount?: BigNumberish | null,
+      tokenContractAddress?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       recipient?: null
     ): SellOrderEventFilter;
     SellOrder(
-      tokenContractAddress?: string | null,
-      amount?: BigNumberish | null,
+      tokenContractAddress?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       recipient?: null
     ): SellOrderEventFilter;
 
@@ -569,164 +687,200 @@ export interface CTMaticContract extends BaseContract {
   };
 
   estimateGas: {
-    balances(subscriber: string, overrides?: CallOverrides): Promise<BigNumber>;
+    balances(
+      subscriber: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     bytes32ToAddress(
-      _address: BytesLike,
+      _address: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     bytes32ToUint256(
-      _amount: BytesLike,
+      _amount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     checkLog(
       log: LogStruct,
-      arg1: BytesLike,
+      arg1: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     convertExactMaticToToken(
-      _tokenOut: string,
-      overrides?: PayableOverrides & { from?: string }
+      _tokenOut: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     convertTokenToMatic(
-      amountIn: BigNumberish,
-      token: string,
-      overrides?: Overrides & { from?: string }
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     estimateMaticforToken(
-      tokenAmountOut: BigNumberish,
-      token: string,
-      overrides?: PayableOverrides & { from?: string }
+      tokenAmountOut: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     estimateTokenForMatic(
-      MaticAmount: BigNumberish,
-      token: string,
-      overrides?: PayableOverrides & { from?: string }
+      MaticAmount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     executeTradeAndDisperce(
-      tokenContractAddress: string,
-      amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string }
+      tokenContractAddress: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
     performUpkeep(
-      performData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      performData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     quoter(overrides?: CallOverrides): Promise<BigNumber>;
 
-    setSwapHelper(
-      _swapHelper: string,
-      overrides?: Overrides & { from?: string }
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     subscribe(
-      overrides?: PayableOverrides & { from?: string }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     subscriberCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    swapHelper(overrides?: CallOverrides): Promise<BigNumber>;
+    swapExactMaticToToken(
+      _tokenOut: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    swapTokenToMatic(
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     uniswapRouter(overrides?: CallOverrides): Promise<BigNumber>;
 
-    userBalance(user: string, overrides?: CallOverrides): Promise<BigNumber>;
+    userBalance(
+      user: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     balances(
-      subscriber: string,
+      subscriber: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     bytes32ToAddress(
-      _address: BytesLike,
+      _address: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     bytes32ToUint256(
-      _amount: BytesLike,
+      _amount: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     checkLog(
       log: LogStruct,
-      arg1: BytesLike,
+      arg1: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     convertExactMaticToToken(
-      _tokenOut: string,
-      overrides?: PayableOverrides & { from?: string }
+      _tokenOut: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     convertTokenToMatic(
-      amountIn: BigNumberish,
-      token: string,
-      overrides?: Overrides & { from?: string }
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     estimateMaticforToken(
-      tokenAmountOut: BigNumberish,
-      token: string,
-      overrides?: PayableOverrides & { from?: string }
+      tokenAmountOut: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     estimateTokenForMatic(
-      MaticAmount: BigNumberish,
-      token: string,
-      overrides?: PayableOverrides & { from?: string }
+      MaticAmount: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     executeTradeAndDisperce(
-      tokenContractAddress: string,
-      amount: BigNumberish,
-      overrides?: PayableOverrides & { from?: string }
+      tokenContractAddress: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     performUpkeep(
-      performData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      performData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     quoter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    setSwapHelper(
-      _swapHelper: string,
-      overrides?: Overrides & { from?: string }
+    renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     subscribe(
-      overrides?: PayableOverrides & { from?: string }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     subscriberCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    swapHelper(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    swapExactMaticToToken(
+      _tokenOut: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    swapTokenToMatic(
+      amountIn: PromiseOrValue<BigNumberish>,
+      token: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     uniswapRouter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     userBalance(
-      user: string,
+      user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

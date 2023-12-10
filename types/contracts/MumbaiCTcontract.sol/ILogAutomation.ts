@@ -20,17 +20,18 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "../../common";
 
 export type LogStruct = {
-  index: BigNumberish;
-  timestamp: BigNumberish;
-  txHash: BytesLike;
-  blockNumber: BigNumberish;
-  blockHash: BytesLike;
-  source: string;
-  topics: BytesLike[];
-  data: BytesLike;
+  index: PromiseOrValue<BigNumberish>;
+  timestamp: PromiseOrValue<BigNumberish>;
+  txHash: PromiseOrValue<BytesLike>;
+  blockNumber: PromiseOrValue<BigNumberish>;
+  blockHash: PromiseOrValue<BytesLike>;
+  source: PromiseOrValue<string>;
+  topics: PromiseOrValue<BytesLike>[];
+  data: PromiseOrValue<BytesLike>;
 };
 
 export type LogStructOutput = [
@@ -65,11 +66,11 @@ export interface ILogAutomationInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "checkLog",
-    values: [LogStruct, BytesLike]
+    values: [LogStruct, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "performUpkeep",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
 
   decodeFunctionResult(functionFragment: "checkLog", data: BytesLike): Result;
@@ -110,38 +111,38 @@ export interface ILogAutomation extends BaseContract {
   functions: {
     checkLog(
       log: LogStruct,
-      checkData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      checkData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     performUpkeep(
-      performData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      performData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
   checkLog(
     log: LogStruct,
-    checkData: BytesLike,
-    overrides?: Overrides & { from?: string }
+    checkData: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   performUpkeep(
-    performData: BytesLike,
-    overrides?: Overrides & { from?: string }
+    performData: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     checkLog(
       log: LogStruct,
-      checkData: BytesLike,
+      checkData: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<
       [boolean, string] & { upkeepNeeded: boolean; performData: string }
     >;
 
     performUpkeep(
-      performData: BytesLike,
+      performData: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -151,26 +152,26 @@ export interface ILogAutomation extends BaseContract {
   estimateGas: {
     checkLog(
       log: LogStruct,
-      checkData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      checkData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     performUpkeep(
-      performData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      performData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     checkLog(
       log: LogStruct,
-      checkData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      checkData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     performUpkeep(
-      performData: BytesLike,
-      overrides?: Overrides & { from?: string }
+      performData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

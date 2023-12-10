@@ -10,6 +10,8 @@ import {
   SellOrder,
   logDisperce
 } from "../generated/schema"
+import {Bytes} from "@graphprotocol/graph-ts";
+
 
 export function handleBuyOrder(event: BuyOrderEvent): void {
   let entity = new BuyOrder(
@@ -65,7 +67,7 @@ export function handlelogDisperce(event: logDisperceEvent): void {
   entity.receivedTokens = event.params.receivedTokens
   entity.tokensToDistributePerUser = event.params.tokensToDistributePerUser
   entity.fundedSubscriberCount = event.params.fundedSubscriberCount
-  entity.fundedSubscribers = event.params.fundedSubscribers
+  entity.fundedSubscribers = changetype<Bytes[]>(event.params.fundedSubscribers)
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp

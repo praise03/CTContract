@@ -1,4 +1,4 @@
-const CTMaticAbi = [
+[
   {
     "inputs": [],
     "name": "Insufficient_Balance",
@@ -517,8 +517,3 @@ const CTMaticAbi = [
     "type": "receive"
   }
 ]
-
-const CTMaticContractAddress = "0xd4203C458104C98328Ba83e2F2E4cA8C6C4e121C"
-
-export {CTMaticAbi, CTMaticContractAddress}
-

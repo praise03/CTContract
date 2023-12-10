@@ -20,6 +20,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "../../../../common";
 
 export interface IQuoterInterface extends utils.Interface {
@@ -40,19 +41,31 @@ export interface IQuoterInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "quoteExactInput",
-    values: [BytesLike, BigNumberish]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "quoteExactInputSingle",
-    values: [string, string, BigNumberish, BigNumberish, BigNumberish]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "quoteExactOutput",
-    values: [BytesLike, BigNumberish]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "quoteExactOutputSingle",
-    values: [string, string, BigNumberish, BigNumberish, BigNumberish]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
 
   decodeFunctionResult(
@@ -103,94 +116,94 @@ export interface IQuoter extends BaseContract {
 
   functions: {
     quoteExactInput(
-      path: BytesLike,
-      amountIn: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      path: PromiseOrValue<BytesLike>,
+      amountIn: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     quoteExactInputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountIn: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountIn: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     quoteExactOutput(
-      path: BytesLike,
-      amountOut: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      path: PromiseOrValue<BytesLike>,
+      amountOut: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     quoteExactOutputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountOut: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountOut: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
   quoteExactInput(
-    path: BytesLike,
-    amountIn: BigNumberish,
-    overrides?: Overrides & { from?: string }
+    path: PromiseOrValue<BytesLike>,
+    amountIn: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   quoteExactInputSingle(
-    tokenIn: string,
-    tokenOut: string,
-    fee: BigNumberish,
-    amountIn: BigNumberish,
-    sqrtPriceLimitX96: BigNumberish,
-    overrides?: Overrides & { from?: string }
+    tokenIn: PromiseOrValue<string>,
+    tokenOut: PromiseOrValue<string>,
+    fee: PromiseOrValue<BigNumberish>,
+    amountIn: PromiseOrValue<BigNumberish>,
+    sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   quoteExactOutput(
-    path: BytesLike,
-    amountOut: BigNumberish,
-    overrides?: Overrides & { from?: string }
+    path: PromiseOrValue<BytesLike>,
+    amountOut: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   quoteExactOutputSingle(
-    tokenIn: string,
-    tokenOut: string,
-    fee: BigNumberish,
-    amountOut: BigNumberish,
-    sqrtPriceLimitX96: BigNumberish,
-    overrides?: Overrides & { from?: string }
+    tokenIn: PromiseOrValue<string>,
+    tokenOut: PromiseOrValue<string>,
+    fee: PromiseOrValue<BigNumberish>,
+    amountOut: PromiseOrValue<BigNumberish>,
+    sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     quoteExactInput(
-      path: BytesLike,
-      amountIn: BigNumberish,
+      path: PromiseOrValue<BytesLike>,
+      amountIn: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     quoteExactInputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountIn: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountIn: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     quoteExactOutput(
-      path: BytesLike,
-      amountOut: BigNumberish,
+      path: PromiseOrValue<BytesLike>,
+      amountOut: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     quoteExactOutputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountOut: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountOut: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -199,65 +212,65 @@ export interface IQuoter extends BaseContract {
 
   estimateGas: {
     quoteExactInput(
-      path: BytesLike,
-      amountIn: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      path: PromiseOrValue<BytesLike>,
+      amountIn: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     quoteExactInputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountIn: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountIn: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     quoteExactOutput(
-      path: BytesLike,
-      amountOut: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      path: PromiseOrValue<BytesLike>,
+      amountOut: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     quoteExactOutputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountOut: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountOut: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     quoteExactInput(
-      path: BytesLike,
-      amountIn: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      path: PromiseOrValue<BytesLike>,
+      amountIn: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     quoteExactInputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountIn: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountIn: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     quoteExactOutput(
-      path: BytesLike,
-      amountOut: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      path: PromiseOrValue<BytesLike>,
+      amountOut: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     quoteExactOutputSingle(
-      tokenIn: string,
-      tokenOut: string,
-      fee: BigNumberish,
-      amountOut: BigNumberish,
-      sqrtPriceLimitX96: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      tokenIn: PromiseOrValue<string>,
+      tokenOut: PromiseOrValue<string>,
+      fee: PromiseOrValue<BigNumberish>,
+      amountOut: PromiseOrValue<BigNumberish>,
+      sqrtPriceLimitX96: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

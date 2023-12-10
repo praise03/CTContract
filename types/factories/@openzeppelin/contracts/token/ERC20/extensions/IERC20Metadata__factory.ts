@@ -5,9 +5,9 @@
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
 import type {
-  IERC20,
-  IERC20Interface,
-} from "../../../../../@openzeppelin/contracts/token/ERC20/IERC20";
+  IERC20Metadata,
+  IERC20MetadataInterface,
+} from "../../../../../../@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata";
 
 const _abi = [
   {
@@ -129,6 +129,45 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "decimals",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "name",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "symbol",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "totalSupply",
     outputs: [
       {
@@ -195,12 +234,15 @@ const _abi = [
   },
 ] as const;
 
-export class IERC20__factory {
+export class IERC20Metadata__factory {
   static readonly abi = _abi;
-  static createInterface(): IERC20Interface {
-    return new utils.Interface(_abi) as IERC20Interface;
+  static createInterface(): IERC20MetadataInterface {
+    return new utils.Interface(_abi) as IERC20MetadataInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): IERC20 {
-    return new Contract(address, _abi, signerOrProvider) as IERC20;
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): IERC20Metadata {
+    return new Contract(address, _abi, signerOrProvider) as IERC20Metadata;
   }
 }
