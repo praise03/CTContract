@@ -8,13 +8,14 @@
               <img class="w-72 h-72 ml-auto mr-auto" src="/91.png" alt="">
           </div>
 
-          <div class="text-white justify-center capitalize text-lg font-thin text-center">
+          <div class="text-gray-300 justify-center capitalize text-lg font-thin text-center">
             <h1 class="font-extrabold text-2xl">How It Works.</h1>
             <p>1. Trader Deploys Copy Trading Contract and connects it to the website UI</p>
             <p>2. Using the mock UniswapV3 Interface the trader can execute token buys/sells</p>
             <p>3. In the UI specific to that trader, Users can "subscribe" to the Traders trades</p>
             <p>4. Subscribing denotes depositing any amount of MATIC into the copy trading contract</p>
-            <p>5. After Subscribing, the contract the automatically replicates the Trader's exact token trades on behalf of the subscriber
+            <p>5. After Subscribing, the contract the automatically replicates the Trader's exact token trades on behalf of the subscriber (contract firstly checks if 
+              a subscriber is adequately funded to execute the trade)
               and sends the received tokens to the subscribers wallet.
             </p>
             <p>6. The automation above is done by listening to emitted event logs from the contract After the trader performs swaps and recreating the
